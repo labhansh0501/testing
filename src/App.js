@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const QuickSellData = () => {
+    const [data, setData] = useState(null);
 
-export default App;
+    useEffect(() => {
+        axios.get('https://api.quicksell.co/v1/internal/frontend-assignment', {
+            headers: {
+                'Authorization': 'Bearer YOUR_API_KEY'
+            }
+        })
+        .then(response => setData(response.data))
+        .catch(error => console.error('Error:', error));
+    }, []);
+
+    return (
+        <div>
+            {data ? (
+                <pre>{JSON.stringify(data, null, 2)}</pre>
+            ) : (
+                <p>Loading...</p>
+            )}
+        </div>
+    );
+};
+
+export default QuickSellData;
